@@ -37,7 +37,7 @@ afterEvaluate {
             pom {
                 name.set("Compose Quill")
                 description.set("A Jetpack Compose Android Library to create a searchable dropdown.")
-                url.set("https://github.com/the-best-is-best/ComposeQuill")
+                url.set("https://github.com/the-best-is-best/composeSearchableDropDown")
                 licenses {
                     license {
                         name.set("Apache-2.0")
@@ -46,11 +46,11 @@ afterEvaluate {
                 }
                 issueManagement {
                     system.set("Github")
-                    url.set("https://github.com/the-best-is-best/ComposeQuill/issues")
+                    url.set("https://github.com/the-best-is-best/composeSearchableDropDown/issues")
                 }
                 scm {
-                    connection.set("https://github.com/the-best-is-best/ComposeQuill.git")
-                    url.set("https://github.com/the-best-is-best/ComposeQuill")
+                    connection.set("https://github.com/the-best-is-best/composeSearchableDropDown.git")
+                    url.set("https://github.com/the-best-is-best/composeSearchableDropDown")
                 }
                 developers {
                     developer {
@@ -65,7 +65,7 @@ afterEvaluate {
 
             maven {
                 name = "OSSRH-snapshots"
-                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
                 credentials {
                     username = System.getenv("MAVEN_NAME")
                     password = System.getenv("MAVEN_TOKEN")
@@ -75,17 +75,16 @@ afterEvaluate {
 //                name = "LocalMaven"
 //                url = uri("$buildDir/maven")
                 //   }
-                maven {
-                    name = "GitHubPackages"
-                    url = uri("https://maven.pkg.github.com/the-best-is-best/ComposeQuill")
-                    credentials {
-                        username = "the-best-is-best"
-                        password =
-                            System.getenv("BUILD_MAVEN")
-                    }
-                }
+//                maven {
+//                    name = "GitHubPackages"
+//                    url = uri("https://maven.pkg.github.com/the-best-is-best/ComposeQuill")
+//                    credentials {
+//                        username = "the-best-is-best"
+//                        password =
+//                            System.getenv("BUILD_MAVEN")
+//                    }
+//                }
             }
-
 
         }
 
