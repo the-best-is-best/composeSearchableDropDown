@@ -26,7 +26,7 @@ afterEvaluate {
         publications.create<MavenPublication>("release") {
             groupId = "io.github.the-best-is-best"
             artifactId = "ComposeSearchableDropdown"
-            version = "1.0.0-SNAPSHOT"
+            version = "1.0.1-2-SNAPSHOT"
             from(components["release"])
 
 
@@ -35,7 +35,7 @@ afterEvaluate {
             //artifact("$buildDir/libs/ComposeQuill-release.jar")
             // Provide artifacts information required by Maven Central
             pom {
-                name.set("Compose Quill")
+                name.set("Compose Searchable Dropdown")
                 description.set("A Jetpack Compose Android Library to create a searchable dropdown.")
                 url.set("https://github.com/the-best-is-best/composeSearchableDropDown")
                 licenses {
@@ -62,7 +62,6 @@ afterEvaluate {
             }
         }
         repositories {
-
             maven {
                 name = "OSSRH-snapshots"
                 url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
@@ -70,27 +69,34 @@ afterEvaluate {
                     username = System.getenv("MAVEN_NAME")
                     password = System.getenv("MAVEN_TOKEN")
                 }
+            }
+
+//            maven {
+//                name = "OSSRH"
+//                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+//                credentials {
+//                    username = System.getenv("MAVEN_NAME")
+//                    password = System.getenv("MAVEN_TOKEN")
+//                }
 //            }
 //            maven {
 //                name = "LocalMaven"
 //                url = uri("$buildDir/maven")
-                //   }
+//                   }
 //                maven {
 //                    name = "GitHubPackages"
-//                    url = uri("https://maven.pkg.github.com/the-best-is-best/ComposeQuill")
+//                    url = uri("https://github.com/the-best-is-best/composeSearchableDropDown")
 //                    credentials {
 //                        username = "the-best-is-best"
 //                        password =
 //                            System.getenv("BUILD_MAVEN")
 //                    }
-//                }
-            }
-
-        }
+       //      }
+           }
+       }
 
     }
 
-}
 
 
 signing {

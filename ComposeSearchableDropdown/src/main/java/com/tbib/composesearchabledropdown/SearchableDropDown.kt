@@ -3,18 +3,11 @@ package com.tbib.composesearchabledropdown
 import android.annotation.SuppressLint
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.OutlinedTextField
@@ -31,13 +24,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 
 @SuppressLint("RememberReturnType")
 @Composable
@@ -52,23 +44,22 @@ fun<T> SearchableDropDown(
     closedIcon: ImageVector = Icons.Outlined.KeyboardArrowDown,
     parentTextFieldCornerRadius: Dp = 12.dp,
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    onDropDownItemSelected: (T) -> Unit = {},
+    onDropDownItemSelected: (T) -> Unit,
     dropdownItem: @Composable (T) -> Unit,
     isError: Boolean = false,
-//    showDefaultSelectedItem: Boolean = false,
-//    defaultItemIndex: Int? = null,
+    idDialog: Boolean = true,
+    searchIn:(item:T) ->String,
+
     defaultItem: T? = null,
     selectedOptionTextDisplay: (T) -> String,
-
-    //onSearchTextFieldClicked: () -> Unit,
 ) {
 
     var selectedOptionText by rememberSaveable { mutableStateOf("") }
-    var searchedOption by rememberSaveable { mutableStateOf("") }
+
     var expanded by remember { mutableStateOf(false) }
-    var filteredItems = mutableListOf<T>()
+
     val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
+
     val itemHeights = remember { mutableStateMapOf<Int, Int>() }
     val baseHeight = 530.dp
     val density = LocalDensity.current
@@ -96,14 +87,20 @@ fun<T> SearchableDropDown(
         baseHeight
     }
 
+
+
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
     ) {
         OutlinedTextField(
             modifier = modifier,
             colors = colors,
-            value = if(selectedOptionText.isEmpty()){ "" } else { selectedOptionTextDisplay(listOfItems.first { it.toString() == selectedOptionText }) },
+            value = if (selectedOptionText.isEmpty()) {
+                ""
+            } else {
+                selectedOptionTextDisplay(listOfItems.first { it.toString() == selectedOptionText })
+            },
             readOnly = readOnly,
             enabled = enable,
             onValueChange = { selectedOptionText = it },
@@ -142,75 +139,53 @@ fun<T> SearchableDropDown(
                     }
                 },
         )
-        if (expanded) {
-            DropdownMenu(
-                modifier = Modifier
-                    .fillMaxWidth(0.75f)
-                    .requiredSizeIn(maxHeight = maxHeight),
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    OutlinedTextField(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                            .focusRequester(focusRequester),
-                        value = searchedOption,
-                        onValueChange = { selectedSport ->
-                            searchedOption = selectedSport
-                            filteredItems = listOfItems.filter {
-                                it.toString().contains(
-                                    searchedOption,
-                                    ignoreCase = true,
-                                )
-                            }.toMutableList()
-                        },
-                        leadingIcon = {
-                            Icon(imageVector = Icons.Outlined.Search, contentDescription = null)
-                        },
-                        placeholder = {
-                            searchPlaceHolder()
-                        },
-                        interactionSource = remember { MutableInteractionSource() }
-                            .also { interactionSource ->
-                                LaunchedEffect(interactionSource) {
-                                    focusRequester.requestFocus()
-                                    interactionSource.interactions.collect {
-                                        if (it is PressInteraction.Release) {
-                                            keyboardController?.show()
-                                        }
-                                    }
-                                }
-                            },
-                    )
 
-                    val items = if (filteredItems.isEmpty()) {
-                        listOfItems
-                    } else {
-                        filteredItems
-                    }
+        if( expanded && idDialog){
+            Dialog(onDismissRequest = { expanded = false}) {
+                DisplayDropDown(
+                    listOfItems = listOfItems,
+                    modifier = modifier,
+                    maxHeight = maxHeight,
+                    onDropDownItemSelected = { item ->
+                        selectedOptionText = item.toString()
+                        expanded = false
+                        onDropDownItemSelected(item)
+                    },
+                    dropdownItem = dropdownItem,
+                    searchPlaceHolder = searchPlaceHolder,
+                    keyboardController = keyboardController,
+                    onChange = { selectedOptionText = it.toString()
+                        expanded = false
+                    },
+                    searchIn =  searchIn
 
-                    items.forEach { selectedItem ->
-                        DropdownMenuItem(
-                            onClick = {
-                                keyboardController?.hide()
-                                selectedOptionText = selectedItem.toString()
-                                onDropDownItemSelected(selectedItem)
-                                searchedOption = ""
-                                expanded = false
-                            },
-                            text = {
-                                   dropdownItem(selectedItem)
-                            },
-                        )
-                    }
-                }
+                )
             }
+        }
+        if (!idDialog && expanded)  {
+
+            DisplayDropDown(
+                listOfItems = listOfItems,
+                modifier = modifier,
+                maxHeight = maxHeight,
+                onDropDownItemSelected = { item ->
+                    selectedOptionText = item.toString()
+                    expanded = false
+                    onDropDownItemSelected(item)
+                },
+                dropdownItem = dropdownItem,
+                searchPlaceHolder = searchPlaceHolder,
+                keyboardController = keyboardController,
+                onChange = { selectedOptionText = it.toString()
+                    expanded = false
+                },
+                searchIn = searchIn
+
+            )
+
         }
     }
 }
+
 
 private val DropdownMenuVerticalPadding = 8.dp

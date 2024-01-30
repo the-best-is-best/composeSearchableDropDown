@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import com.tbib.composesearchabledropdown.SearchableDropDown
 import com.tbib.exmple.ui.theme.ExmpleTheme
 
@@ -21,13 +22,9 @@ data class ExampleData(
 
 
 class MainActivity : ComponentActivity() {
-    private val data = listOf(
-        ExampleData(1, "First"),
-        ExampleData(2, "Second"),
-        ExampleData(3, "Third"),
-        ExampleData(4, "Fourth"),
-        ExampleData(5, "Fifth"),
-    )
+    private val data = List(1000) { index ->
+        ExampleData(index + 1, "Item ${index + 1}")
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -47,15 +44,19 @@ class MainActivity : ComponentActivity() {
                              searchPlaceHolder = {
                                  Text(text = "بحث")
                              },
+                            // idDialog = false,
 
                              //defaultItem = data[2],
                              onDropDownItemSelected = {
                                  Log.d("get v", it.name)
                              },
                              dropdownItem = {
-                                 Text("${it.id} - ${it.name}")
+                                 Text("${it.id} - ${it.name}", fontSize = 20.sp)
                              },
-                             selectedOptionTextDisplay = {it.name}
+                             selectedOptionTextDisplay = {it.name},
+                             searchIn = {
+                                 it.name
+                             }
                          )
 
                  }
