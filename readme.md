@@ -16,7 +16,7 @@ Compose Searchable Dropdown is a Jetpack Compose library for Android that provid
 Compose Searchable Dropdown is available on `mavenCentral()`.
 
 ```kotlin
-implementation("io.github.the-best-is-best:ComposeSearchableDropdown:1.0.0")
+implementation("io.github.the-best-is-best:ComposeSearchableDropdown:1.0.1")
 ```
 
 ## How to use
@@ -53,7 +53,8 @@ SearchableDropDown(
     dropdownItem = {
         Text("${it.id} - ${it.name}")
     },
-    selectedOptionTextDisplay = {it.name}
+    selectedOptionTextDisplay = {it.name},
+    searchIn = {it.name} // or it.id
 )
 ```
 
@@ -66,3 +67,4 @@ SearchableDropDown(
 #### `onDropDownItemSelected` add your callback when item selected and receive item selected
 #### `dropdownItem` add your item view like it.name or any thing will display in search dropdown
 #### `selectedOptionTextDisplay` add your item view like it.name or any thing will display in text field
+#### `searchIn` add your item like it.name or any thing will search in it

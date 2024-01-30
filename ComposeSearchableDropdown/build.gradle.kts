@@ -26,7 +26,7 @@ afterEvaluate {
         publications.create<MavenPublication>("release") {
             groupId = "io.github.the-best-is-best"
             artifactId = "ComposeSearchableDropdown"
-            version = "1.0.1-2-SNAPSHOT"
+            version = "1.0.1"
             from(components["release"])
 
 
@@ -62,23 +62,23 @@ afterEvaluate {
             }
         }
         repositories {
-            maven {
-                name = "OSSRH-snapshots"
-                url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                credentials {
-                    username = System.getenv("MAVEN_NAME")
-                    password = System.getenv("MAVEN_TOKEN")
-                }
-            }
-
 //            maven {
-//                name = "OSSRH"
-//                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+//                name = "OSSRH-snapshots"
+//                url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 //                credentials {
 //                    username = System.getenv("MAVEN_NAME")
 //                    password = System.getenv("MAVEN_TOKEN")
 //                }
 //            }
+
+            maven {
+                name = "OSSRH"
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = System.getenv("MAVEN_NAME")
+                    password = System.getenv("MAVEN_TOKEN")
+                }
+            }
 //            maven {
 //                name = "LocalMaven"
 //                url = uri("$buildDir/maven")
