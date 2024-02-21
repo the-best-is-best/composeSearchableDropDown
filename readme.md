@@ -19,7 +19,56 @@ Compose Searchable Dropdown is available on `mavenCentral()`.
 implementation("io.github.the-best-is-best:ComposeSearchableDropdown:1.0.1")
 ```
 
-## How to use
+## how to use v 2
+```kotlin
+data class ExampleData(
+    val id: Int,
+    val name: String
+)
+
+private val data = listOf(
+    ExampleData(1, "First"),
+    ExampleData(2, "Second"),
+    ExampleData(3, "Third"),
+    ExampleData(4, "Fourth"),
+    ExampleData(5, "Fifth"),
+)
+
+val selectedItemsState = rememberDropdownStates<ExampleData>(value = data[2])
+
+Column{
+
+    SearchableDropDown(
+        listOfItems = data,
+        state = selectedItemsState,
+        placeholder = {
+            Text(text = "اختار")
+        },
+        searchPlaceHolder = {
+            Text(text = "بحث")
+        },
+        onDropDownItemSelected = {
+            Log.d("get v", it.name)
+        },
+        dropdownItem = {
+            Text("${it.id} - ${it.name}", fontSize = 20.sp)
+        },
+        selectedOptionTextDisplay = {it.name},
+        searchIn = {
+            it.name
+        }
+    )
+
+}
+```
+- Can clear state
+
+```kotlin
+    selectedItemsState.clear()
+
+
+```
+## How to use v < 2  
 
 ```kotlin
 data class ExampleData(

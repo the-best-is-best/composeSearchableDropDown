@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.tbib.composesearchabledropdown.states.DropdownState
 
 @SuppressLint("RememberReturnType")
 @Composable
@@ -49,14 +50,12 @@ fun<T> SearchableDropDown(
     isError: Boolean = false,
     idDialog: Boolean = true,
     searchIn:(item:T) ->String,
-
-    defaultItem: T? = null,
+    state: DropdownState<T>,
+    //defaultItem: T? = null,
     selectedOptionTextDisplay: (T) -> String,
 ) {
 
-    var selectedOptionText by rememberSaveable { mutableStateOf("") }
 
-    var expanded by remember { mutableStateOf(false) }
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -64,9 +63,7 @@ fun<T> SearchableDropDown(
     val baseHeight = 530.dp
     val density = LocalDensity.current
 
-    if (defaultItem != null) {
-        selectedOptionText = selectedOptionText.ifEmpty { defaultItem.toString() }
-    }
+
 
     val maxHeight = remember(itemHeights.toMap()) {
         if (itemHeights.keys.toSet() != listOfItems.indices.toSet()) {
@@ -96,23 +93,23 @@ fun<T> SearchableDropDown(
         OutlinedTextField(
             modifier = modifier,
             colors = colors,
-            value = if (selectedOptionText.isEmpty()) {
+            value = if (state.selectedOptionText.isEmpty()) {
                 ""
             } else {
-                selectedOptionTextDisplay(listOfItems.first { it.toString() == selectedOptionText })
+                selectedOptionTextDisplay(listOfItems.first { it.toString() == state.selectedOptionText })
             },
             readOnly = readOnly,
             enabled = enable,
-            onValueChange = { selectedOptionText = it },
+            onValueChange = { state.selectedOptionText = it },
             placeholder = placeholder,
             trailingIcon = {
                 IconToggleButton(
-                    checked = expanded,
+                    checked = state.expanded,
                     onCheckedChange = {
-                        expanded = it
+                        state. expanded = it
                     },
                 ) {
-                    if (expanded) {
+                    if (state.expanded) {
                         Icon(
                             imageVector = openedIcon,
                             contentDescription = null,
@@ -133,51 +130,51 @@ fun<T> SearchableDropDown(
                         keyboardController?.show()
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
-                                expanded = !expanded
+                                state. expanded = !state.expanded
                             }
                         }
                     }
                 },
         )
 
-        if( expanded && idDialog){
-            Dialog(onDismissRequest = { expanded = false}) {
+        if( state.expanded && idDialog){
+            Dialog(onDismissRequest = {state.expanded = false}) {
                 DisplayDropDown(
                     listOfItems = listOfItems,
                     modifier = modifier,
                     maxHeight = maxHeight,
                     onDropDownItemSelected = { item ->
-                        selectedOptionText = item.toString()
-                        expanded = false
+                        state.selectedOptionText = item.toString()
+                        state. expanded = false
                         onDropDownItemSelected(item)
                     },
                     dropdownItem = dropdownItem,
                     searchPlaceHolder = searchPlaceHolder,
                     keyboardController = keyboardController,
-                    onChange = { selectedOptionText = it.toString()
-                        expanded = false
+                    onChange = {state. selectedOptionText = it.toString()
+                        state. expanded = false
                     },
                     searchIn =  searchIn
 
                 )
             }
         }
-        if (!idDialog && expanded)  {
+        if (!idDialog && state.expanded)  {
 
             DisplayDropDown(
                 listOfItems = listOfItems,
                 modifier = modifier,
                 maxHeight = maxHeight,
                 onDropDownItemSelected = { item ->
-                    selectedOptionText = item.toString()
-                    expanded = false
+                    state. selectedOptionText = item.toString()
+                    state. expanded = false
                     onDropDownItemSelected(item)
                 },
                 dropdownItem = dropdownItem,
                 searchPlaceHolder = searchPlaceHolder,
                 keyboardController = keyboardController,
-                onChange = { selectedOptionText = it.toString()
-                    expanded = false
+                onChange = {state. selectedOptionText = it.toString()
+                    state. expanded = false
                 },
                 searchIn = searchIn
 

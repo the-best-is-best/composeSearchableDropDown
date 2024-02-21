@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import com.tbib.composesearchabledropdown.SearchableDropDown
+import com.tbib.composesearchabledropdown.states.rememberDropdownStates
 import com.tbib.exmple.ui.theme.ExmpleTheme
 
 data class ExampleData(
@@ -34,10 +35,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                 Column{
+                    val selectedItemsState = rememberDropdownStates<ExampleData>(value = data[2])
+
+                    Column{
 
                          SearchableDropDown(
                              listOfItems = data,
+                                state = selectedItemsState,
                               placeholder = {
                                     Text(text = "اختار")
                               },
