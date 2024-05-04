@@ -58,9 +58,9 @@ class MainActivity : ComponentActivity() {
                                  Text("${it.id} - ${it.name}", fontSize = 20.sp)
                              },
                              selectedOptionTextDisplay = {it.name},
-                             searchIn = {
-                                 it.name
-                             }
+//                             searchIn = {
+//                                 it.name
+//                             }
                          )
 
                  }

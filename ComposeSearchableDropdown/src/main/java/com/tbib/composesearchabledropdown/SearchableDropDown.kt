@@ -16,12 +16,8 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -49,10 +45,11 @@ fun<T> SearchableDropDown(
     dropdownItem: @Composable (T) -> Unit,
     isError: Boolean = false,
     idDialog: Boolean = true,
-    searchIn:(item:T) ->String,
+    searchIn: ((item: T) -> String)? = null,
     state: DropdownState<T>,
     //defaultItem: T? = null,
     selectedOptionTextDisplay: (T) -> String,
+
 ) {
 
 

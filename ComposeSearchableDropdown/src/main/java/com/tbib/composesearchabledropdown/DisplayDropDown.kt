@@ -41,7 +41,7 @@ fun<T> DisplayDropDown(maxHeight: Dp,
                        searchPlaceHolder: @Composable () -> Unit,
                        keyboardController: SoftwareKeyboardController?,
                        onChange: (value: T) -> Unit,
-                       searchIn: (item:T)-> String
+                       searchIn: ((item: T) -> String)? = null
 
 ){
     var searchedOption by rememberSaveable { mutableStateOf("") }
@@ -62,46 +62,47 @@ fun<T> DisplayDropDown(maxHeight: Dp,
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.Start
         ) {
-
-            OutlinedTextField(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .focusRequester(focusRequester),
-                value = searchedOption,
-                onValueChange = { selectedSport ->
-                    searchedOption = selectedSport
-                    filteredItems = listOfItems.filter {
-                        searchIn(it).contains(
-                            searchedOption,
-                            ignoreCase = true,
-                        )
-                    }.toMutableList()
-                },
-                leadingIcon = {
-                    Icon(imageVector = Icons.Outlined.Search, contentDescription = null)
-                },
-                placeholder = {
-                    searchPlaceHolder()
-                },
-                interactionSource = remember { MutableInteractionSource() }
-                    .also { interactionSource ->
-                        LaunchedEffect(interactionSource) {
-                            focusRequester.requestFocus()
-                            interactionSource.interactions.collect {
-                                if (it is PressInteraction.Release) {
-                                    keyboardController?.show()
-                                }
-                            }
-                        }
-                    },
-            )
-
+          if(searchIn!= null) {
+              OutlinedTextField(
+                  modifier = modifier
+                      .fillMaxWidth()
+                      .padding(16.dp)
+                      .focusRequester(focusRequester),
+                  value = searchedOption,
+                  onValueChange = { selectedSport ->
+                      searchedOption = selectedSport
+                      filteredItems = listOfItems.filter {
+                          searchIn(it).contains(
+                              searchedOption,
+                              ignoreCase = true,
+                          )
+                      }.toMutableList()
+                  },
+                  leadingIcon = {
+                      Icon(imageVector = Icons.Outlined.Search, contentDescription = null)
+                  },
+                  placeholder = {
+                      searchPlaceHolder()
+                  },
+                  interactionSource = remember { MutableInteractionSource() }
+                      .also { interactionSource ->
+                          LaunchedEffect(interactionSource) {
+                              focusRequester.requestFocus()
+                              interactionSource.interactions.collect {
+                                  if (it is PressInteraction.Release) {
+                                      keyboardController?.show()
+                                  }
+                              }
+                          }
+                      },
+              )
+          }
             val items = if (filteredItems.isEmpty() && searchedOption.isEmpty()) {
                 listOfItems
             } else {
                 filteredItems
             }
+
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(15.dp),
                 modifier = Modifier.padding(18.dp)

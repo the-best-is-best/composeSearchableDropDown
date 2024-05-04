@@ -19,7 +19,12 @@ Compose Searchable Dropdown is available on `mavenCentral()`.
 implementation("io.github.the-best-is-best:ComposeSearchableDropdown:1.0.1")
 ```
 
+## v 2.0.1
+
+- The `searchIn` parameter can now be null (if null the search bar will be hidden)
+
 ## how to use v 2
+
 ```kotlin
 data class ExampleData(
     val id: Int,
