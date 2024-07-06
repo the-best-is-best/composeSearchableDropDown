@@ -1,21 +1,36 @@
+rootProject.name = "composeSearchableDropDown"
+
 pluginManagement {
     repositories {
-        google()
-        mavenCentral()
+        google {
+            content { 
+              	includeGroupByRegex("com\\.android.*")
+              	includeGroupByRegex("com\\.google.*")
+              	includeGroupByRegex("androidx.*")
+                includeGroupByRegex("android.*")
+            }
+        }
         gradlePluginPortal()
-    }
-}
-@Suppress("UnstableApiUsage")
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
         mavenCentral()
-        mavenLocal()
-      //  maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 
-rootProject.name = "exmple"
-include(":app")
-include(":ComposeSearchableDropdown")
+dependencyResolutionManagement {
+    repositories {
+        google {
+            content { 
+              	includeGroupByRegex("com\\.android.*")
+              	includeGroupByRegex("com\\.google.*")
+              	includeGroupByRegex("androidx.*")
+                includeGroupByRegex("android.*")
+            }
+        }
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
+        maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
+    }
+}
+include(":composeMultiplatformSearchDropDown")
+include(":sample:composeApp")
+
+

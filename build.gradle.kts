@@ -1,6 +1,10 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id("com.android.application") version "8.4.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.22" apply false
-    id("com.android.library") version "8.4.0" apply false
+    alias(libs.plugins.multiplatform).apply(false)
+    alias(libs.plugins.compose.compiler).apply(false)
+    alias(libs.plugins.compose).apply(false)
+    alias(libs.plugins.android.application).apply(false)
+    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.kotlin.compatibility) apply false
+    alias(libs.plugins.android.library) apply false
 }
+
