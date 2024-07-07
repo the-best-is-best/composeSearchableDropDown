@@ -145,8 +145,7 @@ publishing {
             name = "OSSRH"
             url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials {
-                username = "Mx2n24oi"
-                password = "4UCqjMDRZfSPpnKcwMmKB/0BtXJs4Q8ads63bnjF2lXI"
+              
             }
         }
 //            maven {
