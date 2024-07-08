@@ -7,16 +7,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,7 +20,7 @@ import androidx.compose.ui.window.Dialog
 import com.tbib.composesearchabledropdown.states.DropdownState
 
 @Composable
-fun<T> SearchableDropDown(
+fun <T> SearchableDropDown(
     modifier: Modifier = Modifier,
     listOfItems: List<T>,
     enable: Boolean = true,
@@ -45,29 +37,18 @@ fun<T> SearchableDropDown(
     idDialog: Boolean = true,
     searchIn: ((item: T) -> String)? = null,
     state: DropdownState<T>,
-    //defaultItem: T? = null,
     selectedOptionTextDisplay: (T) -> String,
-
 ) {
-
-
-
     val keyboardController = LocalSoftwareKeyboardController.current
-
     val itemHeights = remember { mutableStateMapOf<Int, Int>() }
     val baseHeight = 530.dp
     val density = LocalDensity.current
 
-
-
     val maxHeight = remember(itemHeights.toMap()) {
         if (itemHeights.keys.toSet() != listOfItems.indices.toSet()) {
-            // if we don't have all heights calculated yet, return default value
             return@remember baseHeight
         }
         val baseHeightInt = with(density) { baseHeight.toPx().toInt() }
-
-        // top+bottom system padding
         var sum = with(density) { DropdownMenuVerticalPadding.toPx().toInt() } * 2
         for ((_, itemSize) in itemHeights.entries.sortedBy { it.value }.associate { it.toPair() }) {
             sum += itemSize
@@ -75,11 +56,8 @@ fun<T> SearchableDropDown(
                 return@remember with(density) { (sum - itemSize / 2).toDp() }
             }
         }
-        // all items fit into base height
         baseHeight
     }
-
-
 
     Column(
         modifier = modifier,
@@ -88,11 +66,7 @@ fun<T> SearchableDropDown(
         OutlinedTextField(
             modifier = modifier,
             colors = colors,
-            value = if (state.selectedOptionText.isEmpty()) {
-                ""
-            } else {
-                selectedOptionTextDisplay(listOfItems.first { it.toString() == state.selectedOptionText })
-            },
+            value = if (state.selectedOptionText.isEmpty()) "" else selectedOptionTextDisplay(listOfItems.first { it.toString() == state.selectedOptionText }),
             readOnly = readOnly,
             enabled = enable,
             onValueChange = { state.selectedOptionText = it },
@@ -100,21 +74,12 @@ fun<T> SearchableDropDown(
             trailingIcon = {
                 IconToggleButton(
                     checked = state.expanded,
-                    onCheckedChange = {
-                        state. expanded = it
-                    },
+                    onCheckedChange = { state.expanded = it },
                 ) {
-                    if (state.expanded) {
-                        Icon(
-                            imageVector = openedIcon,
-                            contentDescription = null,
-                        )
-                    } else {
-                        Icon(
-                            imageVector = closedIcon,
-                            contentDescription = null,
-                        )
-                    }
+                    Icon(
+                        imageVector = if (state.expanded) openedIcon else closedIcon,
+                        contentDescription = null,
+                    )
                 }
             },
             shape = RoundedCornerShape(parentTextFieldCornerRadius),
@@ -125,59 +90,57 @@ fun<T> SearchableDropDown(
                         keyboardController?.show()
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
-                                state. expanded = !state.expanded
+                                state.expanded = !state.expanded
                             }
                         }
                     }
                 },
         )
 
-        if( state.expanded && idDialog){
-            Dialog(onDismissRequest = {state.expanded = false}) {
+        if (state.expanded) {
+            if (idDialog) {
+                Dialog(onDismissRequest = { state.expanded = false }) {
+                    DisplayDropDown(
+                        listOfItems = listOfItems,
+                        modifier = modifier,
+                        maxHeight = maxHeight,
+                        onDropDownItemSelected = { item ->
+                            state.selectedOptionText = item.toString()
+                            state.expanded = false
+                            onDropDownItemSelected(item)
+                        },
+                        dropdownItem = dropdownItem,
+                        searchPlaceHolder = searchPlaceHolder,
+                        keyboardController = keyboardController,
+                        onChange = {
+                            state.selectedOptionText = it.toString()
+                            state.expanded = false
+                        },
+                        searchIn = searchIn
+                    )
+                }
+            } else {
                 DisplayDropDown(
                     listOfItems = listOfItems,
                     modifier = modifier,
                     maxHeight = maxHeight,
                     onDropDownItemSelected = { item ->
                         state.selectedOptionText = item.toString()
-                        state. expanded = false
+                        state.expanded = false
                         onDropDownItemSelected(item)
                     },
                     dropdownItem = dropdownItem,
                     searchPlaceHolder = searchPlaceHolder,
                     keyboardController = keyboardController,
-                    onChange = {state. selectedOptionText = it.toString()
-                        state. expanded = false
+                    onChange = {
+                        state.selectedOptionText = it.toString()
+                        state.expanded = false
                     },
-                    searchIn =  searchIn
-
+                    searchIn = searchIn
                 )
             }
         }
-        if (!idDialog && state.expanded)  {
-
-            DisplayDropDown(
-                listOfItems = listOfItems,
-                modifier = modifier,
-                maxHeight = maxHeight,
-                onDropDownItemSelected = { item ->
-                    state. selectedOptionText = item.toString()
-                    state. expanded = false
-                    onDropDownItemSelected(item)
-                },
-                dropdownItem = dropdownItem,
-                searchPlaceHolder = searchPlaceHolder,
-                keyboardController = keyboardController,
-                onChange = {state. selectedOptionText = it.toString()
-                    state. expanded = false
-                },
-                searchIn = searchIn
-
-            )
-
-        }
     }
 }
-
 
 private val DropdownMenuVerticalPadding = 8.dp

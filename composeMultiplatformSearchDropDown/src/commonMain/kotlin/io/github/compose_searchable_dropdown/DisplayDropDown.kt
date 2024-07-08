@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun<T> DisplayDropDown(maxHeight: Dp,
+internal fun<T> DisplayDropDown(maxHeight: Dp,
                        modifier: Modifier = Modifier,
                        listOfItems: List<T>,
                        onDropDownItemSelected: (item: T) -> Unit,
