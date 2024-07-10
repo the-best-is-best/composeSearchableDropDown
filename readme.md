@@ -20,8 +20,18 @@ Compose Searchable Dropdown is a Jetpack Compose library for Android that provid
 Compose Searchable Dropdown is available on `mavenCentral()`.
 
 ```kotlin
-implementation("io.github.the-best-is-best:ComposeSearchableDropdown:2.0.2")
+implementation("io.github.the-best-is-best:ComposeSearchableDropdown:2.0.5")
 ```
+
+## v 2.0.5
+
+- fix jvm not implementation and need change gradle.properties check if add this
+
+```groovy
+kotlin.native.cacheKind = none
+compose.kotlin.native.manageCacheKind = false
+```
+
 ## v 2.0.2 
 
 - support compose and kotlin multiplatform
