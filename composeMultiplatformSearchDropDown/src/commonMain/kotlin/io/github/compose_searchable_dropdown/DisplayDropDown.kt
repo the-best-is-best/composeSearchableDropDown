@@ -1,4 +1,4 @@
-package com.tbib.composesearchabledropdown
+package io.github.compose_searchable_dropdown
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

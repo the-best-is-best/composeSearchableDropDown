@@ -19,14 +19,14 @@ plugins {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.0.4")
+    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.0.5")
 
     publishToMavenCentral(SonatypeHost.S01)
     signAllPublications()
 
     pom {
         name.set("Compose Searchable Dropdown")
-        description.set("A Jetpack Compose Android Library to create a searchable dropdown.")
+        description.set("A Compose multiplatform Library to create a searchable dropdown.")
         url.set("https://github.com/the-best-is-best/composeSearchableDropDown")
         licenses {
             license {
@@ -54,7 +54,6 @@ mavenPublishing {
 }
 
 
-
 kotlin {
     kotlin.applyDefaultHierarchyTemplate()
     androidTarget {
@@ -77,6 +76,11 @@ kotlin {
         }
     }
     jvm()
+
+    js {
+        browser()
+        binaries.executable()
+    }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
@@ -127,7 +131,8 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.compose_searchable_dropdown"
+
+namespace = "io.github.compose_searchable_dropdown"
     compileSdk = 34
 
     defaultConfig {

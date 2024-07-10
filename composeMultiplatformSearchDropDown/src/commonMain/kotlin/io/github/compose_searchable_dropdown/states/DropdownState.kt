@@ -1,4 +1,4 @@
-package com.tbib.composesearchabledropdown.states
+package io.github.compose_searchable_dropdown.states
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,11 +9,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 
 @Composable
-fun<T> rememberDropdownStates( value: T? = null ): DropdownState<T> {
-    return rememberSaveable(saver = DropdownState.Saver()  ) {
+fun <T> rememberDropdownStates(value: T? = null): DropdownState<T> {
+    return rememberSaveable(saver = DropdownState.Saver()) {
         DropdownState(value)
     }
 }
+
+
 class DropdownState<T> internal constructor(
     value: T?
 ) {
