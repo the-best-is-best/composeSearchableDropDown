@@ -19,7 +19,7 @@ plugins {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.0.6")
+    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.0.7")
 
     publishToMavenCentral(SonatypeHost.S01)
     signAllPublications()

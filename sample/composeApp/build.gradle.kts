@@ -1,9 +1,10 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import com.android.build.api.dsl.ManagedVirtualDevice
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -35,11 +36,11 @@ kotlin {
 
     jvm()
 
+    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
     }
-
     listOf(
         iosX64(),
         iosArm64(),
@@ -88,7 +89,6 @@ android {
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 34
 
         applicationId = "io.github.sample.androidApp"
         versionCode = 1
