@@ -3,12 +3,18 @@ package io.github.compose_searchable_dropdown
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
@@ -19,9 +25,11 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -36,16 +44,21 @@ fun <T> SearchableDropDown(
     placeholder: @Composable (() -> Unit) = { Text(text = "Select Option") },
     searchPlaceHolder: @Composable (() -> Unit) = { Text(text = "Search") },
     openedIcon: ImageVector = Icons.Outlined.KeyboardArrowUp,
+    openedIconColor: Color = LocalContentColor.current,
     closedIcon: ImageVector = Icons.Outlined.KeyboardArrowDown,
+    closedIconColor: Color = LocalContentColor.current,
     parentTextFieldCornerRadius: Dp = 12.dp,
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    onDropDownItemSelected: (T) -> Unit,
+    onDropDownItemSelected: (T?) -> Unit,
     dropdownItem: @Composable (T) -> Unit,
     isError: Boolean = false,
     idDialog: Boolean = true,
     searchIn: ((item: T) -> String)? = null,
     state: DropdownState<T>,
     selectedOptionTextDisplay: (T) -> String,
+    showClearButton: Boolean = false,
+    selectedTextStyle: TextStyle? = null,
+    dropDownTextStyle: TextStyle? = null,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val itemHeights = remember { mutableStateMapOf<Int, Int>() }
@@ -75,19 +88,41 @@ fun <T> SearchableDropDown(
             modifier = modifier,
             colors = colors,
             value = if (state.selectedOptionText.isEmpty()) "" else selectedOptionTextDisplay(listOfItems.first { it.toString() == state.selectedOptionText }),
+            textStyle = selectedTextStyle ?: TextStyle.Default,
             readOnly = readOnly,
             enabled = enable,
             onValueChange = { state.selectedOptionText = it },
             placeholder = placeholder,
             trailingIcon = {
-                IconToggleButton(
-                    checked = state.expanded,
-                    onCheckedChange = { state.expanded = it },
-                ) {
-                    Icon(
-                        imageVector = if (state.expanded) openedIcon else closedIcon,
-                        contentDescription = null,
-                    )
+                Row {
+                    if(showClearButton){
+                        IconToggleButton(
+                            checked = state.selectedOptionText.isNotEmpty(),
+                            onCheckedChange = {
+                                state.selectedOptionText = ""
+                                onDropDownItemSelected(null)
+
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Clear,
+                                contentDescription = null,
+                                tint = LocalContentColor.current,
+                            )
+                        }
+                    }
+
+                    IconToggleButton(
+                        checked = state.expanded,
+                        onCheckedChange = { state.expanded = it },
+                    ) {
+                        Icon(
+                            imageVector = if (state.expanded) openedIcon else closedIcon,
+                            contentDescription = null,
+                            tint = if (state.expanded) openedIconColor else closedIconColor,
+                        )
+                    }
+
                 }
             },
             shape = RoundedCornerShape(parentTextFieldCornerRadius),
@@ -124,7 +159,8 @@ fun <T> SearchableDropDown(
                             state.selectedOptionText = it.toString()
                             state.expanded = false
                         },
-                        searchIn = searchIn
+                        searchIn = searchIn,
+                        dropDownTextStyle = dropDownTextStyle
                     )
                 }
             } else {
@@ -144,7 +180,8 @@ fun <T> SearchableDropDown(
                         state.selectedOptionText = it.toString()
                         state.expanded = false
                     },
-                    searchIn = searchIn
+                    searchIn = searchIn,
+                    dropDownTextStyle = dropDownTextStyle
                 )
             }
         }

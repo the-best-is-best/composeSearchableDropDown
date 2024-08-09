@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -41,7 +42,8 @@ internal fun<T> DisplayDropDown(maxHeight: Dp,
                        searchPlaceHolder: @Composable () -> Unit,
                        keyboardController: SoftwareKeyboardController?,
                        onChange: (value: T) -> Unit,
-                       searchIn: ((item: T) -> String)? = null
+                       searchIn: ((item: T) -> String)? = null,
+                                dropDownTextStyle: TextStyle?
 
 ){
     var searchedOption by rememberSaveable { mutableStateOf("") }
@@ -69,6 +71,7 @@ internal fun<T> DisplayDropDown(maxHeight: Dp,
                       .padding(16.dp)
                       .focusRequester(focusRequester),
                   value = searchedOption,
+                  textStyle = dropDownTextStyle ?: TextStyle.Default,
                   onValueChange = { selectedSport ->
                       searchedOption = selectedSport
                       filteredItems = listOfItems.filter {

@@ -49,7 +49,7 @@ internal fun App() {
 
                 //defaultItem = data[2],
                 onDropDownItemSelected = {
-                    println("get v ${it.name}")
+                    println("get v ${it?.name}")
                 },
                 dropdownItem = {
                     Text("${it.id} - ${it.name}", fontSize = 20.sp)
@@ -57,7 +57,8 @@ internal fun App() {
                 selectedOptionTextDisplay = { it.name },
                 searchIn = {
                     it.name
-                }
+                },
+                showClearButton = true
             )
 
         }
