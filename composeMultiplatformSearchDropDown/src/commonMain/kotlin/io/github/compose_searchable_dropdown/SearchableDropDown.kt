@@ -1,16 +1,21 @@
 package io.github.compose_searchable_dropdown
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -92,35 +97,45 @@ fun <T> SearchableDropDown(
             placeholder = placeholder,
             trailingIcon = {
                 Row {
-                    if(showClearButton){
-                        IconToggleButton(
-                            checked = state.selectedOptionText.isNotEmpty(),
-                            onCheckedChange = {
-                                state.selectedOptionText = ""
-                                onDropDownItemSelected(null)
 
-                            },
+                    if(showClearButton){
+                        Box(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clickable {
+                                    state.selectedOptionText = ""
+                                    onDropDownItemSelected(null)
+                                },
+
                         ) {
                             Icon(
+                                modifier = Modifier
+                                    .size(24.dp),
                                 imageVector = Icons.Outlined.Clear,
                                 contentDescription = null,
                                 tint = LocalContentColor.current,
                             )
                         }
                     }
-
-                    IconToggleButton(
-                        checked = state.expanded,
-                        onCheckedChange = { state.expanded = it },
-                    ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable {
+                                state.expanded = !state.expanded
+                            },
+                    )
                         Icon(
+                            modifier = Modifier
+
+                                .size(30.dp),
                             imageVector = if (state.expanded) openedIcon else closedIcon,
                             contentDescription = null,
+
                             tint = if (state.expanded) openedIconColor else closedIconColor,
                         )
                     }
+                Spacer(modifier = Modifier.width(30.dp))
 
-                }
             },
             shape = RoundedCornerShape(parentTextFieldCornerRadius),
             isError = isError,
