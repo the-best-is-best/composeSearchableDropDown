@@ -43,8 +43,8 @@ fun <T> SearchableDropDown(
     listOfItems: List<T>,
     enable: Boolean = true,
     readOnly: Boolean = true,
-    placeholder: @Composable (() -> Unit) = { Text(text = "Select Option") },
-    searchPlaceHolder: @Composable (() -> Unit) = { Text(text = "Search") },
+    placeholder: @Composable () -> Unit = { Text(text = "Select Option") },
+    searchPlaceHolder: @Composable () -> Unit = { Text(text = "Search") },
     openedIcon: ImageVector = Icons.Outlined.KeyboardArrowUp,
     openedIconColor: Color = LocalContentColor.current,
     closedIcon: ImageVector = Icons.Outlined.KeyboardArrowDown,
@@ -71,12 +71,12 @@ fun <T> SearchableDropDown(
         if (itemHeights.keys.toSet() != listOfItems.indices.toSet()) {
             return@remember baseHeight
         }
-        val baseHeightInt = with(density) { baseHeight.toPx().toInt() }
-        var sum = with(density) { DropdownMenuVerticalPadding.toPx().toInt() } * 2
-        for ((_, itemSize) in itemHeights.entries.sortedBy { it.value }.associate { it.toPair() }) {
-            sum += itemSize
-            if (sum >= baseHeightInt) {
-                return@remember with(density) { (sum - itemSize / 2).toDp() }
+        val baseHeightPx = with(density) { baseHeight.toPx().toInt() }
+        var totalHeight = with(density) { DropdownMenuVerticalPadding.toPx().toInt() * 2 }
+        for ((_, itemSize) in itemHeights.entries.sortedBy { it.value }) {
+            totalHeight += itemSize
+            if (totalHeight >= baseHeightPx) {
+                return@remember with(density) { (totalHeight - itemSize / 2).toDp() }
             }
         }
         baseHeight
@@ -97,8 +97,7 @@ fun <T> SearchableDropDown(
             placeholder = placeholder,
             trailingIcon = {
                 Row {
-
-                    if(showClearButton){
+                    if (showClearButton) {
                         Box(
                             modifier = Modifier
                                 .padding(4.dp)
@@ -106,11 +105,9 @@ fun <T> SearchableDropDown(
                                     state.selectedOptionText = ""
                                     onDropDownItemSelected(null)
                                 },
-
                         ) {
                             Icon(
-                                modifier = Modifier
-                                    .size(24.dp),
+                                modifier = Modifier.size(24.dp),
                                 imageVector = Icons.Outlined.Clear,
                                 contentDescription = null,
                                 tint = LocalContentColor.current,
@@ -120,22 +117,17 @@ fun <T> SearchableDropDown(
                     Box(
                         modifier = Modifier
                             .padding(4.dp)
-                            .clickable {
-                                state.expanded = !state.expanded
-                            },
-                    )
+                            .clickable { state.expanded = !state.expanded },
+                    ) {
                         Icon(
-                            modifier = Modifier
-
-                                .size(30.dp),
+                            modifier = Modifier.size(30.dp),
                             imageVector = if (state.expanded) openedIcon else closedIcon,
                             contentDescription = null,
-
                             tint = if (state.expanded) openedIconColor else closedIconColor,
                         )
                     }
-                Spacer(modifier = Modifier.width(30.dp))
-
+                    Spacer(modifier = Modifier.width(30.dp))
+                }
             },
             shape = RoundedCornerShape(parentTextFieldCornerRadius),
             isError = isError,
