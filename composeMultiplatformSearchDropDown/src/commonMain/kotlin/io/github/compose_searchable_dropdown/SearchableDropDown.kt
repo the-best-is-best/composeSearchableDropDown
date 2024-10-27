@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -62,7 +61,7 @@ fun <T> SearchableDropDown(
     selectedTextStyle: TextStyle? = null,
     dropDownTextStyle: TextStyle? = null,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
+//    val keyboardController = LocalSoftwareKeyboardController.current
     val itemHeights = remember { mutableStateMapOf<Int, Int>() }
     val baseHeight = 530.dp
     val density = LocalDensity.current
@@ -134,7 +133,7 @@ fun <T> SearchableDropDown(
             interactionSource = remember { MutableInteractionSource() }
                 .also { interactionSource ->
                     LaunchedEffect(interactionSource) {
-                        keyboardController?.show()
+//                        keyboardController?.show()
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
                                 state.expanded = !state.expanded
@@ -158,7 +157,7 @@ fun <T> SearchableDropDown(
                         },
                         dropdownItem = dropdownItem,
                         searchPlaceHolder = searchPlaceHolder,
-                        keyboardController = keyboardController,
+                        //keyboardController = keyboardController,
                         onChange = {
                             state.selectedOptionText = it.toString()
                             state.expanded = false
@@ -179,7 +178,7 @@ fun <T> SearchableDropDown(
                     },
                     dropdownItem = dropdownItem,
                     searchPlaceHolder = searchPlaceHolder,
-                    keyboardController = keyboardController,
+                    // keyboardController = keyboardController,
                     onChange = {
                         state.selectedOptionText = it.toString()
                         state.expanded = false

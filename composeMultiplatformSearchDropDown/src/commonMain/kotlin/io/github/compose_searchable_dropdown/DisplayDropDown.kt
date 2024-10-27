@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -41,7 +40,7 @@ internal fun <T> DisplayDropDown(
     onDropDownItemSelected: (item: T) -> Unit,
     dropdownItem: @Composable (item: T) -> Unit,
     searchPlaceHolder: @Composable () -> Unit,
-    keyboardController: SoftwareKeyboardController?,
+    // keyboardController: SoftwareKeyboardController?,
     onChange: (value: T) -> Unit,
     searchIn: ((item: T) -> String)? = null,
     dropDownTextStyle: TextStyle?
@@ -89,7 +88,7 @@ internal fun <T> DisplayDropDown(
                             LaunchedEffect(interactionSource) {
                                 interactionSource.interactions.collect { interaction ->
                                     if (interaction is PressInteraction.Release) {
-                                        keyboardController?.show() // Show keyboard on user interaction
+                                        // keyboardController?.show() // Show keyboard on user interaction
                                     }
                                 }
                             }
@@ -110,7 +109,7 @@ internal fun <T> DisplayDropDown(
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            keyboardController?.hide()
+                            //keyboardController?.hide()
                             onDropDownItemSelected(item)
                             searchedOption = ""
                             onChange(item)
