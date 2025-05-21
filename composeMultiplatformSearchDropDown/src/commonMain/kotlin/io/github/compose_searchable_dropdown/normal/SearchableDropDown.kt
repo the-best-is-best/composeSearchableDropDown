@@ -1,4 +1,4 @@
-package io.github.compose_searchable_dropdown
+package io.github.compose_searchable_dropdown.normal
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -133,7 +133,6 @@ fun <T> SearchableDropDown(
             interactionSource = remember { MutableInteractionSource() }
                 .also { interactionSource ->
                     LaunchedEffect(interactionSource) {
-//                        keyboardController?.show()
                         interactionSource.interactions.collect {
                             if (it is PressInteraction.Release) {
                                 state.expanded = !state.expanded

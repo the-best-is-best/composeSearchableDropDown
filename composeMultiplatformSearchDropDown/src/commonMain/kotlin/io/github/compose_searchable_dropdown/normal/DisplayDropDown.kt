@@ -1,8 +1,7 @@
-package io.github.compose_searchable_dropdown
+package io.github.compose_searchable_dropdown.normal
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +38,6 @@ internal fun <T> DisplayDropDown(
     onDropDownItemSelected: (item: T) -> Unit,
     dropdownItem: @Composable (item: T) -> Unit,
     searchPlaceHolder: @Composable () -> Unit,
-    // keyboardController: SoftwareKeyboardController?,
     onChange: (value: T) -> Unit,
     searchIn: ((item: T) -> String)? = null,
     dropDownTextStyle: TextStyle?
@@ -84,15 +81,7 @@ internal fun <T> DisplayDropDown(
                         searchPlaceHolder()
                     },
                     interactionSource = remember { MutableInteractionSource() }
-                        .also { interactionSource ->
-                            LaunchedEffect(interactionSource) {
-                                interactionSource.interactions.collect { interaction ->
-                                    if (interaction is PressInteraction.Release) {
-                                        // keyboardController?.show() // Show keyboard on user interaction
-                                    }
-                                }
-                            }
-                        },
+
                 )
             }
             val items = if (filteredItems.isEmpty() && searchedOption.isEmpty()) {

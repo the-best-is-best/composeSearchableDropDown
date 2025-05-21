@@ -6,8 +6,8 @@
     <img alt="API" src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat" style="max-width: 100%;">
 </a>
 <img src="https://img.shields.io/badge/Platform-Android-brightgreen.svg?logo=android" alt="Badge Android" />
-		<img src="https://img.shields.io/badge/Platform-iOS%20%2F%20macOS-lightgrey.svg?logo=apple" alt="Badge iOS" />
-		<img src="https://img.shields.io/badge/Platform-JVM-8A2BE2.svg?logo=openjdk" alt="Badge JVM" />
+  <img src="https://img.shields.io/badge/Platform-iOS%20%2F%20macOS-lightgrey.svg?logo=apple" alt="Badge iOS" />
+  <img src="https://img.shields.io/badge/Platform-JVM-8A2BE2.svg?logo=openjdk" alt="Badge JVM" />
     <img src="https://img.shields.io/badge/Platform-WASM%20%2F%20JS-yellow.svg?logo=javascript" alt="Badge JS" />
 <a href="https://github.com/the-best-is-best/"><img alt="Profile" src="https://img.shields.io/badge/github-%23181717.svg?&style=for-the-badge&logo=github&logoColor=white" height="20"/></a>
 
@@ -25,6 +25,12 @@ Compose Searchable Dropdown is available on `mavenCentral()`.
 implementation("io.github.the-best-is-best:ComposeSearchableDropdown:2.1.1")
 ```
 
+## v 2.2.0
+
+- upgrade kotlin version to 2.1.20 and compose to 1.8.0
+
+- support multi-selection
+
 ## v 2.0.5
 
 - fix jvm not implementation and need change gradle.properties check if add this
@@ -34,7 +40,7 @@ kotlin.native.cacheKind = none
 compose.kotlin.native.manageCacheKind = false
 ```
 
-## v 2.0.2 
+## v 2.0.2
 
 - support compose and kotlin multiplatform
 
@@ -83,15 +89,74 @@ Column{
         }
     )
 
+
 }
+
+
+@Composable
+fun MultiSelectExample() {
+    data class ExampleData(
+        val id: Int,
+        val name: String
+    )
+
+    val data = List(1000) { index ->
+        ExampleData(index + 1, "Item ${index + 1}")
+    }
+
+    val multiState = rememberMultiDropdownState<ExampleData>()
+
+    MaterialTheme(
+        colorScheme = lightColorScheme()
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            MultiSearchableDropDown(
+                listOfItems = data,
+                state = multiState,
+                placeholder = { Text("اختر عدة عناصر") },
+                searchPlaceHolder = { Text("بحث...") },
+                showClearButton = true,
+                openedIconColor = Color.Blue,
+                closedIconColor = Color.Gray,
+                onSelectionChanged = {
+                    println("Selected Items: ${it.map { it.name }}")
+                },
+                selectedOptionTextDisplay = { selectedSet ->
+                    if (selectedSet.isEmpty()) "لم يتم الاختيار"
+                    else selectedSet.joinToString(", ") { it.name }
+                },
+                dropdownItem = { item, isSelected ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = if (isSelected) Icons.Outlined.CheckBox else Icons.Outlined.CheckBoxOutlineBlank,
+                            contentDescription = null,
+                            tint = if (isSelected) Color.Green else Color.Gray
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "${item.id} - ${item.name}", fontSize = 18.sp)
+                    }
+                },
+                searchIn = { it.name }
+            )
+        }
+    }
+}
+
 ```
+
 - Can clear state
 
 ```kotlin
     selectedItemsState.clear()
-
-
 ```
+
 ## How to use v < 2  
 
 ```kotlin
@@ -134,10 +199,17 @@ SearchableDropDown(
 <br></br>
 
 #### `listOfItems` add your list data
+
 #### `placeholder` add your placeholder for text field
+
 #### `searchPlaceHolder` add your placeholder for search field
+
 #### `defaultItem` add your default item
+
 #### `onDropDownItemSelected` add your callback when item selected and receive item selected
+
 #### `dropdownItem` add your item view like it.name or any thing will display in search dropdown
+
 #### `selectedOptionTextDisplay` add your item view like it.name or any thing will display in text field
+
 #### `searchIn` add your item like it.name or any thing will search in it

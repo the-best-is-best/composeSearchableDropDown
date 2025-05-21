@@ -19,7 +19,7 @@ plugins {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.1.1")
+    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.2.0")
 
     publishToMavenCentral(SonatypeHost.S01, true)
     signAllPublications()
@@ -105,6 +105,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
         }
@@ -133,7 +134,7 @@ kotlin {
 android {
 
 namespace = "io.github.compose_searchable_dropdown"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
