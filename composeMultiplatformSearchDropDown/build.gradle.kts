@@ -18,7 +18,7 @@ plugins {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.2.0")
+    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.3.0")
 
     publishToMavenCentral(SonatypeHost.S01, true)
     signAllPublications()
@@ -142,10 +142,10 @@ namespace = "io.github.compose_searchable_dropdown"
 
 }
 
-//signing {
-//    useGpgCmd()
-//    sign(publishing.publications)
-//}
+signing {
+    useGpgCmd()
+    sign(publishing.publications)
+}
 
 compose.desktop {
     application {
