@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.compose_searchable_dropdown.multi_selection.MultiSearchableDropDown
@@ -28,13 +29,14 @@ import io.github.compose_searchable_dropdown.normal.SearchableDropDown
 import io.github.compose_searchable_dropdown.states.rememberDropdownStates
 import io.github.compose_searchable_dropdown.states.rememberMultiDropdownState
 
+data class ExampleData(
+    val id: Int,
+    val name: String
+)
 
 @Composable
 internal fun App() {
-    data class ExampleData(
-        val id: Int,
-        val name: String
-    )
+
 
     val data = List(1000) { index ->
         ExampleData(index + 1, "Item ${index + 1}")
@@ -68,8 +70,16 @@ internal fun App() {
                     onDropDownItemSelected = {
                         println("get v ${it?.name}")
                     },
+                    disableSelectItem = data.first { it.id == 10 },
+
                     dropdownItem = {
-                        Text("${it.id} - ${it.name}", fontSize = 20.sp)
+                        Text("${it.id} - ${it.name}", fontSize = 20.sp ,
+                            color = if (it.id == 10) {
+                                Color.Red
+                            } else {
+                                Color.Black
+                            }
+                        )
                     },
                     selectedOptionTextDisplay = { it.name },
                     searchIn = {
@@ -105,18 +115,23 @@ internal fun App() {
             item {
                 MultiSelectExample()
             }
+            item {
+                MultiSelectExample(
+                    listDisableItem = data.filter { it.id == 10  || it.id == 11}.toSet(),
+                )
+            }
         }
 
     }
 
 }
 
+
+
 @Composable
-fun MultiSelectExample() {
-    data class ExampleData(
-        val id: Int,
-        val name: String,
-    )
+fun MultiSelectExample(
+    listDisableItem : Set<ExampleData>? = null,
+) {
 
     val data = List(1000) { index ->
         ExampleData(index + 1, "Item ${index + 1}")
@@ -140,6 +155,7 @@ fun MultiSelectExample() {
                 showClearButton = true,
                 openedIconColor = Color.Blue,
                 closedIconColor = Color.Gray,
+                disableSelectItem = listDisableItem,
                 onSelectionChanged = {
                     println("Selected Items: ${it.map { it.name }}")
                 },
@@ -158,7 +174,15 @@ fun MultiSelectExample() {
                             tint = if (isSelected) Color.Green else Color.Gray
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "${item.id} - ${item.name}", fontSize = 18.sp)
+                        Text(text = "${item.id} - ${item.name}", fontSize = 18.sp,
+                            color =
+                                if(listDisableItem?.contains(item) == true ) {
+                                    Color.Red
+                                } else{
+                                    Color.Black
+                                }
+
+                        )
                     }
                 },
                 searchIn = { it.name }

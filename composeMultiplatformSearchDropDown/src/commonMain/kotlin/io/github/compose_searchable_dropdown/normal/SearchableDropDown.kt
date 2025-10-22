@@ -55,11 +55,11 @@ fun <T> SearchableDropDown(
     isError: Boolean = false,
     idDialog: Boolean = true,
     searchIn: ((item: T) -> String)? = null,
+    disableSelectItem: T? = null,
     state: DropdownState<T>,
     selectedOptionTextDisplay: (T) -> String,
     showClearButton: Boolean = false,
     selectedTextStyle: TextStyle? = null,
-    dropDownTextStyle: TextStyle? = null,
 ) {
 //    val keyboardController = LocalSoftwareKeyboardController.current
     val itemHeights = remember { mutableStateMapOf<Int, Int>() }
@@ -162,7 +162,8 @@ fun <T> SearchableDropDown(
                             state.expanded = false
                         },
                         searchIn = searchIn,
-                        dropDownTextStyle = dropDownTextStyle
+//                        dropDownTextStyle = dropDownTextStyle,
+                        disableSelectItem = disableSelectItem
                     )
                 }
             } else {
@@ -183,7 +184,8 @@ fun <T> SearchableDropDown(
                         state.expanded = false
                     },
                     searchIn = searchIn,
-                    dropDownTextStyle = dropDownTextStyle
+//                    dropDownTextStyle = dropDownTextStyle,
+                    disableSelectItem = disableSelectItem
                 )
             }
         }

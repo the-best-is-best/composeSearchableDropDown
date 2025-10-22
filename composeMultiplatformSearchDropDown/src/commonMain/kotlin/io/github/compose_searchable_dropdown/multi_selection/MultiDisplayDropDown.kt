@@ -40,8 +40,8 @@ internal fun <T> MultiDisplayDropDown(
     searchPlaceHolder: @Composable () -> Unit,
     searchIn: ((item: T) -> String)? = null,
     selectedItems: Set<T>,
-    dropDownTextStyle: TextStyle?,
-) {
+    disableSelectItem: Set<T>?,
+    ) {
     var searchedOption by rememberSaveable { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
     val filteredItems = remember(searchedOption, listOfItems) {
@@ -72,8 +72,9 @@ internal fun <T> MultiDisplayDropDown(
                         .padding(16.dp)
                         .focusRequester(focusRequester),
                     value = searchedOption,
-                    textStyle = dropDownTextStyle ?: TextStyle.Default,
-                    onValueChange = { selectedSport -> searchedOption = selectedSport },
+                    onValueChange = {
+                        selectedSport -> searchedOption = selectedSport
+                                    },
                     leadingIcon = {
                         Icon(imageVector = Icons.Outlined.Search, contentDescription = null)
                     },
@@ -93,6 +94,7 @@ internal fun <T> MultiDisplayDropDown(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
+                                if(disableSelectItem?.contains(item) == true) return@clickable
                                 val newSelection = selectedItems.toMutableSet()
                                 if (selectedItems.contains(item)) {
                                     newSelection.remove(item)

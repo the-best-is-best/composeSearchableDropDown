@@ -40,7 +40,7 @@ internal fun <T> DisplayDropDown(
     searchPlaceHolder: @Composable () -> Unit,
     onChange: (value: T) -> Unit,
     searchIn: ((item: T) -> String)? = null,
-    dropDownTextStyle: TextStyle?
+    disableSelectItem: T?,
 ) {
     var searchedOption by rememberSaveable { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
@@ -64,8 +64,8 @@ internal fun <T> DisplayDropDown(
                         .padding(16.dp)
                         .focusRequester(focusRequester),
                     value = searchedOption,
-                    textStyle = dropDownTextStyle ?: TextStyle.Default,
                     onValueChange = { selectedSport ->
+                        if(selectedSport == disableSelectItem) return@OutlinedTextField
                         searchedOption = selectedSport
                         filteredItems = listOfItems.filter {
                             searchIn(it).contains(
@@ -98,7 +98,7 @@ internal fun <T> DisplayDropDown(
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            //keyboardController?.hide()
+                            if(item == disableSelectItem) return@clickable
                             onDropDownItemSelected(item)
                             searchedOption = ""
                             onChange(item)

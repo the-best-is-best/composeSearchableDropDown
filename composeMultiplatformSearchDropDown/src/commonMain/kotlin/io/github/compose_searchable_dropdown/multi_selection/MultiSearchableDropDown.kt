@@ -58,6 +58,7 @@ fun <T> MultiSearchableDropDown(
     selectedTextStyle: TextStyle? = null,
     dropDownTextStyle: TextStyle? = null,
     idDialog: Boolean = true,
+    disableSelectItem: Set<T>? = null,
     searchIn: ((item: T) -> String)? = null,
 ) {
     val itemHeights = remember { mutableStateMapOf<Int, Int>() }
@@ -155,7 +156,7 @@ fun <T> MultiSearchableDropDown(
                         searchPlaceHolder = searchPlaceHolder,
                         searchIn = searchIn,
                         selectedItems = state.selectedItems,
-                        dropDownTextStyle = dropDownTextStyle
+                        disableSelectItem = disableSelectItem
                     )
                 }
             } else {
@@ -171,7 +172,8 @@ fun <T> MultiSearchableDropDown(
                     searchPlaceHolder = searchPlaceHolder,
                     searchIn = searchIn,
                     selectedItems = state.selectedItems,
-                    dropDownTextStyle = dropDownTextStyle
+                    disableSelectItem = disableSelectItem
+
                 )
             }
         }

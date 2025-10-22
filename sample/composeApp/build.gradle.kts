@@ -23,14 +23,7 @@ kotlin {
             }
         }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        instrumentedTestVariant {
-            sourceSetTree.set(KotlinSourceSetTree.test)
-            dependencies {
-                debugImplementation(libs.androidx.testManifest)
-                implementation(libs.androidx.junit4)
-            }
-        }
+
     }
 
     jvm()
@@ -85,7 +78,7 @@ kotlin {
 
 android {
     namespace = "io.github.sample"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26

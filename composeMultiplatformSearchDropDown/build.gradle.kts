@@ -65,14 +65,7 @@ kotlin {
             }
         }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        instrumentedTestVariant {
-            sourceSetTree.set(KotlinSourceSetTree.test)
-            dependencies {
-                debugImplementation(libs.androidx.testManifest)
-                implementation(libs.androidx.junit4)
-            }
-        }
+
     }
     jvm()
 
@@ -132,7 +125,7 @@ kotlin {
 android {
 
 namespace = "io.github.compose_searchable_dropdown"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
@@ -148,10 +141,11 @@ namespace = "io.github.compose_searchable_dropdown"
     }
 
 }
-signing {
-    useGpgCmd()
-    sign(publishing.publications)
-}
+
+//signing {
+//    useGpgCmd()
+//    sign(publishing.publications)
+//}
 
 compose.desktop {
     application {
