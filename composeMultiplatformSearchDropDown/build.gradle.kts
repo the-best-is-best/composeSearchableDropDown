@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
@@ -18,9 +17,9 @@ plugins {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.3.0")
+    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.3.1")
 
-    publishToMavenCentral(SonatypeHost.S01, true)
+    publishToMavenCentral( true)
     signAllPublications()
 
     pom {
@@ -94,21 +93,21 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.runtime)
+            implementation(libs.foundation)
+            implementation(libs.material3)
+            implementation(libs.material.icons.extended)
+            implementation(libs.ui.tooling.preview)
         }
-
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
-        }
+//
+//        commonTest.dependencies {
+//            implementation(kotlin("test"))
+//            @OptIn(ExperimentalComposeLibrary::class)
+//            implementation(compose.uiTest)
+//        }
 
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation(libs.ui.tooling)
             implementation(libs.androidx.activityCompose)
         }
 
@@ -128,7 +127,7 @@ namespace = "io.github.compose_searchable_dropdown"
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
       }
 
     compileOptions {
