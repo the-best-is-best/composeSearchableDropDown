@@ -31,6 +31,7 @@ dependencyResolutionManagement {
     }
 }
 include(":composeMultiplatformSearchDropDown")
-include(":sample:composeApp")
+include(":sample:sharedUI")
+include(":sample:androidSimple")
 
 

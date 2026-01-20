@@ -1,15 +1,11 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidKotlinMultiplatformLibrary)
     id("maven-publish")
     id("signing")
     id("com.vanniktech.maven.publish")
@@ -17,7 +13,7 @@ plugins {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.3.1")
+    coordinates("io.github.the-best-is-best", "ComposeSearchableDropdown", "2.3.2")
 
     publishToMavenCentral( true)
     signAllPublications()
@@ -53,19 +49,7 @@ mavenPublishing {
 
 
 kotlin {
-    kotlin.applyDefaultHierarchyTemplate()
-    androidTarget {
-        compilations.all {
-            compileTaskProvider {
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_1_8)
-                    freeCompilerArgs.add("-Xjdk-release=${JavaVersion.VERSION_1_8}")
-                }
-            }
-        }
-        //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
-
-    }
+    jvmToolchain(17)
     jvm()
 
     js {
@@ -119,27 +103,16 @@ kotlin {
         }
 
     }
-}
 
-android {
+    android {
 
-namespace = "io.github.compose_searchable_dropdown"
-    compileSdk = 36
-
-    defaultConfig {
+        namespace = "io.github.compose_searchable_dropdown"
+        compileSdk = 36
         minSdk = 23
-      }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildFeatures {
-        //enables a Compose tooling support in the AndroidStudio
-        compose = true
-    }
-
 }
+
 
 signing {
     useGpgCmd()

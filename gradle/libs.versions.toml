@@ -2,8 +2,7 @@
 componentsResources = "1.10.0"
 kotlin = "2.3.0"
 compose = "1.10.0"
-#noinspection AndroidGradlePluginVersion
-agp = "8.13.2"
+agp = "9.0.0"
 androidx-activityCompose = "1.12.2"
 material3 = "1.10.0-alpha05"
 materialIconsExtended = "1.7.3"
@@ -25,4 +24,4 @@ multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotl
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
+androidKotlinMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }

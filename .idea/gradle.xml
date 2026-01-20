@@ -12,10 +12,10 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/composeMultiplatformSearchDropDown" />
             <option value="$PROJECT_DIR$/sample" />
-            <option value="$PROJECT_DIR$/sample/composeApp" />
+            <option value="$PROJECT_DIR$/sample/androidSimple" />
+            <option value="$PROJECT_DIR$/sample/sharedUI" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
